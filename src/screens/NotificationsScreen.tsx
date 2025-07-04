@@ -1,10 +1,25 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, Platform } from 'react-native';
 import DateTimePicker from '@react-native-community/datetimepicker';
+import { 
+  differenceInYears, 
+  differenceInMonths, 
+  differenceInDays, 
+  differenceInHours, 
+  differenceInMinutes, 
+  differenceInSeconds,
+  format,
+  subYears,
+  subMonths,
+  subDays,
+  subHours,
+  subMinutes
+} from 'date-fns';
 
 const NotificationsScreen = () => {
   // Initial date (can be overridden by user)
   const [specialDate, setSpecialDate] = useState(new Date());
+  
   interface TimeElapsed {
     years: number;
     months: number;
@@ -33,58 +48,51 @@ const NotificationsScreen = () => {
     let timer: NodeJS.Timeout | undefined;
     if (!isPickingDate) {
       // Update timer every second
-      timer = setInterval(() => {
-        calculateTimeElapsed();
-      }, 1000);
+      timer = setInterval(calculateTimeElapsed, 1000);
     }
     
-    // Cleanup
+    // Cleanup function - this runs when the effect is cleaned up
     return () => {
-      if (timer) clearInterval(timer);
+      if (timer) {
+        clearInterval(timer);
+      }
     };
-  }, [specialDate, isPickingDate]); // Add dependencies so effect reruns when these change
+  }, [calculateTimeElapsed, isPickingDate]); // This effect will re-run when calculateTimeElapsed or isPickingDate changes
 
-  const calculateTimeElapsed = () => {
+  const calculateTimeElapsed = useCallback(() => {
     const now = new Date();
-    const diff = now.getTime() - specialDate.getTime(); // Time difference in milliseconds
-
-    // Convert to readable units
-    let seconds = Math.floor((diff / 1000) % 60);
-    let minutes = Math.floor((diff / (1000 * 60)) % 60);
-    let hours = Math.floor((diff / (1000 * 60 * 60)) % 24);
-    let days = Math.floor((diff / (1000 * 60 * 60 * 24)) % 30.44); // Approx days in a month
     
-    // Calculate months including fractional months
-    let months = 0;
-    let years = 0;
-    
-    // Calculate total months first
-    let totalMonths = (now.getFullYear() - specialDate.getFullYear()) * 12;
-    totalMonths += now.getMonth() - specialDate.getMonth();
-    
-    // Adjust for day of month
-    if (now.getDate() < specialDate.getDate()) {
-      totalMonths--;
-    }
-    
-    // Extract years and remaining months
-    if (totalMonths >= 12) {
-      years = Math.floor(totalMonths / 12);
-      months = totalMonths % 12;
-    } else {
-      months = totalMonths;
+    // If the date is in the future, set all values to 0
+    if (specialDate > now) {
+      setTimeElapsed({ years: 0, months: 0, days: 0, hours: 0, minutes: 0, seconds: 0 });
+      return;
     }
 
-    // If negative, set to zero (in case date is in future)
-    if (years < 0) years = 0;
-    if (months < 0) months = 0;
-    if (days < 0) days = 0;
-    if (hours < 0) hours = 0;
-    if (minutes < 0) minutes = 0;
-    if (seconds < 0) seconds = 0;
+    // Calculate total differences using date-fns
+    const years = differenceInYears(now, specialDate);
+    
+    // Calculate remaining months after subtracting years
+    const afterYears = subYears(now, years);
+    const months = differenceInMonths(afterYears, specialDate);
+    
+    // Calculate remaining days after subtracting years and months
+    const afterMonths = subMonths(afterYears, months);
+    const days = differenceInDays(afterMonths, specialDate);
+    
+    // Calculate remaining hours after subtracting years, months, and days
+    const afterDays = subDays(afterMonths, days);
+    const hours = differenceInHours(afterDays, specialDate);
+    
+    // Calculate remaining minutes after subtracting years, months, days, and hours
+    const afterHours = subHours(afterDays, hours);
+    const minutes = differenceInMinutes(afterHours, specialDate);
+    
+    // Calculate remaining seconds after subtracting years, months, days, hours, and minutes
+    const afterMinutes = subMinutes(afterHours, minutes);
+    const seconds = differenceInSeconds(afterMinutes, specialDate);
     
     setTimeElapsed({ years, months, days, hours, minutes, seconds });
-  };
+  }, [specialDate]);
 
   // Open date picker
   const openDatePicker = () => {
@@ -173,11 +181,7 @@ const NotificationsScreen = () => {
       </TouchableOpacity>
       
       <Text style={styles.dateText}>
-        Since {specialDate.toLocaleDateString('en-US', { 
-          month: 'long', 
-          day: 'numeric', 
-          year: 'numeric' 
-        })}
+        Since {format(specialDate, 'MMMM d, yyyy')}
       </Text>
       
       <Text style={styles.tapHint}>Tap the timer to change date</Text>
