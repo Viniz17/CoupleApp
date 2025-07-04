@@ -4,9 +4,9 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 // Import screens
-import HomeScreen from '../screens/HomeScreen';
-import ExploreScreen from '../screens/ExploreScreen';
 import NotificationsScreen from '../screens/NotificationsScreen';
+import ExploreScreen from '../screens/ExploreScreen';
+import HomeScreen from '../screens/HomeScreen';
 import ProfileScreen from '../screens/ProfileScreen';
 import SettingsScreen from '../screens/SettingsScreen';
 
@@ -25,7 +25,7 @@ const TabNavigator = (): React.ReactElement => {
   
   return (
     <Tab.Navigator
-      initialRouteName="Notifications"
+      initialRouteName="Home"
       screenOptions={{
         tabBarActiveTintColor: '#0c0e0f',
         tabBarInactiveTintColor: '#95a5a6',
@@ -38,13 +38,6 @@ const TabNavigator = (): React.ReactElement => {
         headerShown: false, // Hide the header
       }}
     >
-      <Tab.Screen 
-        name="Home" 
-        component={HomeScreen} 
-        options={{
-          tabBarIcon: ({ color }) => <TabBarIcon name="home-outline" color={color} />,
-        }}
-      />
       <Tab.Screen 
         name="Explore" 
         component={ExploreScreen}
@@ -59,6 +52,13 @@ const TabNavigator = (): React.ReactElement => {
           tabBarIcon: ({ color }) => <TabBarIcon name="notifications-outline" color={color} />,
         }}
       />
+        <Tab.Screen 
+          name="Home" 
+          component={HomeScreen} 
+          options={{
+            tabBarIcon: ({ color }) => <TabBarIcon name="home-outline" color={color} />,
+          }}
+        />
       <Tab.Screen 
         name="Profile" 
         component={ProfileScreen}
