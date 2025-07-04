@@ -1,21 +1,17 @@
-// src/navigation/TabNavigator.tsx
 import React from 'react';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
-// Import screens
 import NotificationsScreen from '../screens/NotificationsScreen';
 import ExploreScreen from '../screens/ExploreScreen';
 import HomeScreen from '../screens/HomeScreen';
 import ProfileScreen from '../screens/ProfileScreen';
 import SettingsScreen from '../screens/SettingsScreen';
 
-// Import icons
 import { Ionicons } from '@expo/vector-icons';
 
 const Tab = createBottomTabNavigator();
 
-// Custom tab bar icon component
 const TabBarIcon = ({ name, color }: { name: string; color: string }): React.ReactElement => {
   return <Ionicons name={name} size={24} color={color} />;
 };
@@ -35,7 +31,7 @@ const TabNavigator = (): React.ReactElement => {
           paddingBottom: insets.bottom > 0 ? insets.bottom : 10, 
           height: 60 + (insets.bottom > 0 ? insets.bottom : 10),
         },
-        headerShown: false, // Hide the header
+        headerShown: false,
       }}
     >
       <Tab.Screen 
