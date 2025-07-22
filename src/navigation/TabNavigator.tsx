@@ -2,11 +2,11 @@ import React from 'react';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
-import NotificationsScreen from '../screens/NotificationsScreen';
-import ExploreScreen from '../screens/ExploreScreen';
+import GalleryScreen from '../screens/GalleryScreen';
+import SharedCalendarScreen from '../screens/SharedCalendarScreen';
 import HomeScreen from '../screens/HomeScreen';
-import ProfileScreen from '../screens/ProfileScreen';
-import SettingsScreen from '../screens/SettingsScreen';
+import RecommendationsScreen from '../screens/RecommendationsScreen';
+import MemoriesScreen from '../screens/MemoriesScreen';
 
 import { Ionicons } from '@expo/vector-icons';
 
@@ -18,7 +18,7 @@ const TabBarIcon = ({ name, color }: { name: string; color: string }): React.Rea
 
 const TabNavigator = (): React.ReactElement => {
   const insets = useSafeAreaInsets();
-  
+
   return (
     <Tab.Navigator
       initialRouteName="Home"
@@ -26,47 +26,47 @@ const TabNavigator = (): React.ReactElement => {
         tabBarActiveTintColor: '#0c0e0f',
         tabBarInactiveTintColor: '#95a5a6',
         tabBarLabelStyle: { fontSize: 12 },
-        tabBarStyle: { 
+        tabBarStyle: {
           backgroundColor: '#fff',
-          paddingBottom: insets.bottom > 0 ? insets.bottom : 10, 
+          paddingBottom: insets.bottom > 0 ? insets.bottom : 10,
           height: 60 + (insets.bottom > 0 ? insets.bottom : 10),
         },
         headerShown: false,
       }}
     >
-      <Tab.Screen 
-        name="Explore" 
-        component={ExploreScreen}
+      <Tab.Screen
+        name="Gallery"
+        component={GalleryScreen}
         options={{
-          tabBarIcon: ({ color }) => <TabBarIcon name="search-outline" color={color} />,
+          tabBarIcon: ({ color }) => <TabBarIcon name="images-outline" color={color} />,
         }}
       />
-      <Tab.Screen 
-        name="Notifications" 
-        component={NotificationsScreen}
+      <Tab.Screen
+        name="Timeline"
+        component={MemoriesScreen}
         options={{
-          tabBarIcon: ({ color }) => <TabBarIcon name="notifications-outline" color={color} />,
+          tabBarIcon: ({ color }) => <TabBarIcon name="heart-outline" color={color} />,
         }}
       />
-        <Tab.Screen 
-          name="Home" 
-          component={HomeScreen} 
-          options={{
-            tabBarIcon: ({ color }) => <TabBarIcon name="home-outline" color={color} />,
-          }}
-        />
-      <Tab.Screen 
-        name="Profile" 
-        component={ProfileScreen}
+      <Tab.Screen
+        name="Home"
+        component={HomeScreen}
         options={{
-          tabBarIcon: ({ color }) => <TabBarIcon name="person-outline" color={color} />,
+          tabBarIcon: ({ color }) => <TabBarIcon name="home-outline" color={color} />,
         }}
       />
-      <Tab.Screen 
-        name="Settings" 
-        component={SettingsScreen}
+      <Tab.Screen
+        name="Vibes"
+        component={RecommendationsScreen}
         options={{
-          tabBarIcon: ({ color }) => <TabBarIcon name="settings-outline" color={color} />,
+          tabBarIcon: ({ color }) => <TabBarIcon name="chatbubbles-outline" color={color} />,
+        }}
+      />
+      <Tab.Screen
+        name="Calendar"
+        component={SharedCalendarScreen}
+        options={{
+          tabBarIcon: ({ color }) => <TabBarIcon name="calendar-outline" color={color} />,
         }}
       />
     </Tab.Navigator>
