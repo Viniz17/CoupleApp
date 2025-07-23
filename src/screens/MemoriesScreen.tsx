@@ -958,9 +958,6 @@ const styles = StyleSheet.create({
     color: '#495057',
     marginBottom: 10,
   },
-  emojiContainer: {
-    marginBottom: 20,
-  },
   emojiSelector: {
     flexGrow: 0,
   },
