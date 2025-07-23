@@ -16,7 +16,7 @@ import {
   subHours,
   subMinutes
 } from 'date-fns';
-import InvitePartnerButton from '../components/InvitePartneButton';
+import InvitePartnerButton from '../components/InvitePartnerButton';
 
 const SPECIAL_DATE_KEY = 'special_date';
 
@@ -195,7 +195,7 @@ const HomeScreen = () => {
 
   return (
     <View style={styles.container}>
-       <InvitePartnerButton position="bottom-right" style={{}} />
+       {/* <InvitePartnerButton position="bottom-right" style={{}} /> */}
       <View style={styles.headerContainer}>
         <Text style={styles.title}>💕 Our Love Journey 💕</Text>
         <Text style={styles.subtitle}>✨ Every moment counts ✨</Text>
@@ -207,16 +207,16 @@ const HomeScreen = () => {
         <Text style={styles.decorativeHeart}>💝</Text>
       </View>
       
-      <TouchableOpacity onPress={openDatePicker} style={styles.timerContainer}>
+      <View style={styles.timerContainer}>
         {getTimeDisplay()}
-      </TouchableOpacity>
+      </View>
       
-      <View style={styles.dateContainer}>
+      <TouchableOpacity onPress={openDatePicker} style={styles.dateContainer}>
         <Text style={styles.dateText}>
           Since {format(specialDate, 'MMMM d, yyyy')} 💫
         </Text>
-        <Text style={styles.tapHint}>💭 Tap the timer to change our special date</Text>
-      </View>
+        <Text style={styles.tapHint}>💭 Tap to change our special date</Text>
+      </TouchableOpacity>
       
       <View style={styles.bottomDecorations}>
         <Text style={styles.decorativeEmoji}>🌟</Text>
@@ -331,6 +331,7 @@ const styles = StyleSheet.create({
     fontWeight: '500',
   },
   dateContainer: {
+    width: '100%',
     alignItems: 'center',
     backgroundColor: 'rgba(255, 255, 255, 0.7)',
     borderRadius: 16,
